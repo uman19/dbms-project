@@ -1,0 +1,66 @@
+
+<?php
+
+	session_start();
+	include("connection.php");
+	include("function.php");
+	include("style.php");
+
+    $udata=check_login($con);
+
+     if($_SERVER['REQUEST_METHOD']=="POST")
+        {
+            //something was posted
+            $result;
+            $usn=$_POST['usn'];
+            $query="select * from stdinfo where usn = '$usn'";
+            if(!empty($usn))
+            {
+                if(mysqli_query($con,$query))
+                {
+                    $result=mysqli_query($con,$query);
+                }
+                else{
+                    echo mysqli_error($con);
+                }
+            }
+        }
+
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>srms - student info</title>
+</head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style1.css">
+<body class="body">
+    <nav>
+        <a href="index.php">Student Result Management System</a>
+        <div class="navlink">
+            <ul>
+                <li><a href="index.php">HOME</a></li>
+                <li><a href="about.php">ABOUT</a></li>
+                <li><a href="mission.php">MISSION</a></li>
+                <li><a href="vision.php">VISION</a></li>
+                <li><a href="contact.php">CONTACT</a></li>
+                <li><a href="logout.php">LOGOUT</a></li>
+            </ul>
+
+        </div>
+    </nav>
+	<div id="box">
+		<form method="POST" action="table3.php">
+			<div class="title">Student info</div>
+			usn:
+			<input id="text" type="text" name="usn"  placeholder="enter student usn" pattern="[0-9][a-z]{2}[0-9]{2}[a-z]{2}[0-9]{3}" title="eg:- 1kg19cs047, 1kg19cs018, etc..," required><br><br>
+            <input id="button" type="submit" name="submit" value="view"><br><br>
+			<a href="index.php">Go back</a><br><br>
+
+		</form>
+
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,78 @@
+
+<?php
+
+	session_start();
+	include("connection.php");
+	include("function.php");
+	include("style.php");
+
+    $udata=check_login($con);
+
+
+	if($_SERVER['REQUEST_METHOD']=="POST")
+	{
+		//something was posted
+		$usn=$_POST['usn'];
+		$sem=$_POST['sem'];
+		$sgpa=$_POST['sgpa'];
+		$cgpa=$_POST['cgpa'];
+		//save to db
+		$query="insert into gpa(usn,sem,sgpa,cgpa) values('$usn','$sem','$sgpa','$cgpa')";
+		if(mysqli_query($con,$query))
+		{
+		    echo "inserted into gpa table. ";
+		}else
+		{
+		    echo mysqli_error($con);
+		}
+
+		sleep(1);
+		header("location: index.php");
+        die;
+    }
+
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>srms - add student sgpa/cgpa</title>
+</head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style1.css">
+<body class="body">
+    <nav>
+        <a href="index.php">Student Result Management System</a>
+        <div class="navlink">
+            <ul>
+                <li><a href="index.php">HOME</a></li>
+                <li><a href="about.php">ABOUT</a></li>
+                <li><a href="mission.php">MISSION</a></li>
+                <li><a href="vision.php">VISION</a></li>
+                <li><a href="contact.php">CONTACT</a></li>
+                <li><a href="logout.php">LOGOUT</a></li>
+            </ul>
+
+        </div>
+    </nav>
+	<div id="box">
+		<form method="POST" action="action.php">
+			<div class="title">Add student SGPA/CGPA</div>
+			usn:
+			<input id="text" type="text" name="usn" placeholder="enter student usn" pattern="[0-9][a-z]{2}[0-9]{2}[a-z]{2}[0-9]{3}" title="eg:- 1kg19cs047, 1kg19cs018, etc..," required><br><br>
+			sem:
+			<input id="text" type="int" name="sem" placeholder="enter semester" required><br><br>
+            sgpa:
+			<input id="text" type="float" name="sgpa" placeholder="enter semester sgpa"><br><br>
+			cgpa:
+			<input id="text" type="float" name="cgpa" placeholder="enter cgpa if semester is 8"><br><br>
+
+			<input id="button" type="submit" name="submit" value="Add"><br><br>
+			<a href="index.php">Go back</a><br><br>
+		</form>
+
+	</div>
+
+</body>
+</html>
+
